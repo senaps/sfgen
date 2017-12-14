@@ -1,4 +1,4 @@
-from distutils.core import setup, , find_packages
+from setuptools import setup, find_packages
 
 
 setup(
@@ -10,9 +10,13 @@ setup(
     author='sneaps',
     author_email='gerdakan.sa@gmail.com',
     description='generate a flask application, as fast as possible',
+    install_requires=[
+            'click',
+            'requests',
+        ],
     entry_points={
         'console_scripts': [
-            'sfgen = src.cli:main'
+            'sfgen = sfgen.console:cli'
         ],
     }
 )
