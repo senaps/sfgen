@@ -1,4 +1,4 @@
-#Senaps Flask Generator
+# Senaps Flask Generator
 
 
 sfgen is a console application to quickly generate the basic structure of a blueprint ready flask application.
@@ -32,7 +32,7 @@ to update the `sfgen` application, and since it's not present in `pypi`, you wou
     pip install -U .
 and this command will update `sfgen`
 
-##contribution
+## contribution
 although this is a personal project, every contribution is welcome.
 
 ### sfgen needs
