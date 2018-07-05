@@ -42,13 +42,14 @@ def create(project_type, name, path):
                         "typo in your project type!", fg="red"))
         return
     url = urls.get(project_type)
-    if name:
-        current_name = path + names.get(project_type)
-        new_name = path + name
+
     try:
         tmpfile = ZipFile(BytesIO(requests.get(url).content))
         tmpfile.extractall(path=path)
-        os.rename(current_name, new_name)
+        if name:
+            current_name = path + names.get(project_type)
+            new_name = path + name
+            os.rename(current_name, new_name)
     except IOError:
         click.echo(click.style("could not write file to this location",
                                fg="red"))

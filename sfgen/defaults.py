@@ -13,7 +13,7 @@ urls = {
 # of these names would be used.
 names = {
     'flask': 'flask_bare-0.0.1-alpha',
-    'module': '0.0.1-alpha'
+    'module': 'bare_module-0.0.1-alpha'
     }
 
 
