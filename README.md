@@ -1,7 +1,7 @@
-# Senaps Flask Generator
+# Senaps Fast App Generator
 
 
-sfgen is a console application to quickly generate the basic structure of a blueprint ready flask application.
+sfgen is a console application to quickly generate the basic structure of a application.
 
 ## install
 
@@ -15,27 +15,20 @@ after this, you can use `sfgen` by invoking it's command arguments.
 to use `sfgen`, there is only one option for now, but we will be building on it in the future.
 **remember** that you should create a `virtualenv` for the project yourself. 
 
-### create_app
+### create
 create app creates a new flask application, blueprint ready .
 
-    sfgen create_app
-this will create a folder named `test` and within it, is the `flask` files you would need to use.
+    sfgen create flask
+this will create a folder named `flask_bare-0.0.1-alpha` and within it, is the `flask` files you would need to use.
 
 #### options
 
-- **`-name`** the project name, this will be used as the folder name too.
-- **`-path`** this is the path to put the project in(not implemented yet!)
+    sfgen create module -n sample -o /root/sampleproject
 
-## update
-to update the `sfgen` application, and since it's not present in `pypi`, you would have to download the updated version and upgrade it with:
+- **` -n --name`** the project name, this will be used as the folder name too.
+- **` -o --path`** this is the path to put the project in(not implemented yet!)
 
-    pip install -U .
-and this command will update `sfgen`
 
-## contribution
-although this is a personal project, every contribution is welcome.
+## app options
 
-### sfgen needs
-- **`tests`** for the `sfgen` app itself, or the `flask_bare` application that it generates
-- **`code style`** improvements so the code can be read and used more easily
-- **`refactoring`** codes so it's more and more dynamic and be more usable for different usages. 
+currently i only have only implemented the `flask` and `module`. but will build upon them.
