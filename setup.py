@@ -16,7 +16,7 @@ setup(
         ],
     entry_points={
         'console_scripts': [
-            'sfgen = sfgen.console:cli'
+            'sfgen = sfgen.cli:cli'
         ],
     }
 )
