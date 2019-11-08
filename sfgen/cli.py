@@ -3,8 +3,14 @@ import os
 import sys
 
 from distutils.dir_util import copy_tree
+from itertools import repeat
 
+APP_TYPES = ['simple', 'full']
 TEMPLATES_PATH = os.path.join(os.path.abspath("."), "templates/")
+
+
+def make_path(project_path, app_name):
+    return os.path.join(project_path, app_name) + "/"
 
 
 def make_dest(project_path, app_name, app_type):
@@ -13,7 +19,7 @@ def make_dest(project_path, app_name, app_type):
     we will check if the path doesnt already exist, and then create the app
     project structure, copying all the files from the templates to it.
     """
-    tmp_path = os.path.join(project_path, app_name)
+    tmp_path = make_path(project_path, app_name)
     if os.path.exists(tmp_path):
         raise FileExistsError(f"a file in {tmp_path} already exists.")
     os.mkdir(tmp_path)  # create the project path
@@ -21,29 +27,46 @@ def make_dest(project_path, app_name, app_type):
     return True
 
 
-def make_simple_app(app_name, app_path):
+def get_files(directory):
+    templates = list()
+    names = list()
+    for root, folders, files in os.walk(directory):
+        for file_obj in files:
+            if file_obj.endswith("tmpl"):
+                templates.append(file_obj)
+            elif "tmpl" in file_obj:
+                names.append(file_obj)
+    return templates, names
+
+
+def fix_filename(name, file_path, app_name):
+    file_end = "." + name.split(".")[-1]
+    os.rename(file_path + name, file_path + app_name + file_end)
+
+
+def fix_template(project_name, file_path):
+    pass
+
+
+def make_app(app_name, app_path, app_type):
     """
     """
-    make_dest(app_name=app_name, project_path=app_path, app_type="simple_app")
-
-
-def make_full_app(app_name, app_path):
-    make_dest(app_name=app_name, project_path=app_path, app_type="full_app")
-
-
-APP_TYPES = {
-    "simple": make_simple_app,
-    "full": make_full_app
-}
+    app_type = app_type + "_app"
+    make_dest(app_name=app_name, project_path=app_path, app_type=app_type)
+    directory = make_path(app_name=app_name, project_path=app_path)
+    templates, names = get_files(directory)
+    for app in names:
+        fix_filename(name=app, file_path=directory, app_name=app_name)
 
 
 if __name__ == "__main__":
     description = "senaps fast [code (flask)] generator"
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("app_type", choices=APP_TYPES.keys())
+    parser.add_argument("app_type", choices=APP_TYPES)
     parser.add_argument("-n", "--name", default="app",
                         help="the name of the app", dest="name")
     parser.add_argument("-p", "--path", default=".", dest="project_path",
                         help="the path to create the app in")
     args = parser.parse_args()
-    APP_TYPES[args.app_type](args.name, args.project_path)
+    make_app(args.name, args.project_path, args.app_type)
+
