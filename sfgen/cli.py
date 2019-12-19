@@ -6,6 +6,16 @@ flask app and etc.
 
 we want to use as few out of standard library packages as possible :)
 
+functions in this module are:
+
+    - make_path()  make the path string for the application
+    - make_dest()  check if the path is okay to write to
+    - get_file_content()  open a file and return it's content
+    - set_file_content()  write the received content to the file
+    - get_files()  check project files and fix their name and data
+    - fix_filename()  remove the .tmpl from the name of the file
+    - fix_template()  replace the variables in the file with actual text
+    - make_app()  make an application
 """
 import argparse
 import os
@@ -17,6 +27,7 @@ from string import Template
 
 APP_TYPES = ['simple', 'full']
 if __name__ == "__main__":
+    # are we calling the cli.py directly?
     curr_path = os.path.abspath(".")
 else:
     curr_path = os.path.abspath(__file__)[:-7]
@@ -165,6 +176,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # this runs if called from the terminal
     main()
 

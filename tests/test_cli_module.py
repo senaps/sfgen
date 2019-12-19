@@ -35,7 +35,7 @@ def test_make_dest_path_exists():
 
 
 def test_make_dest(mocker):
-
     with make_tmpdir() as tmp:
+        mocker.patch('sfgen.cli.make_path', return_value=f"{tmp}/tester")
         assert make_dest(project_path=tmp, app_name="tester",
-                    app_type="simple_app") == f"{tmp}/tester/"
+                    app_type="simple_app") == f"{tmp}/tester"
