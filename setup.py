@@ -13,7 +13,6 @@ setup(
     author='sneaps',
     author_email='gerdakan.sa@gmail.com',
     description=description,
-        #TODO: entry points should be fixed with new style:))
     entry_points={
         'console_scripts': [
             'sfgen = sfgen.cli:main'
