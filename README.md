@@ -18,17 +18,22 @@ to use `sfgen`, there is only one option for now, but we will be building on it 
 ### create
 create app creates a new flask application, blueprint ready .
 
-    sfgen create flask
-this will create a folder named `flask_bare-0.0.1-alpha` and within it, is the `flask` files you would need to use.
+    sfgen simple
+this will create a simple project for you in the current path where you are. the project will be named `app`
 
 #### options
 
-    sfgen create module -n sample -o /root/sampleproject
+    sfgen -n blog -p /tmp simple
 
 - **` -n --name`** the project name, this will be used as the folder name too.
-- **` -o --path`** this is the path to put the project in(not implemented yet!)
+- **` -p --path`** this is the path to put the project in
 
 
 ## app options
 
-currently i only have only implemented the `flask` and `module`. but will build upon them.
+currently i only have only implemented the `simple` flask app. but will come up with a `full` app too which contains the whole setup for blueprints and all.
+
+## TODO:
+- [ ] the tests and coverage
+- [ ] more apps to be supported
+- [ ] code documentation and refactoring
