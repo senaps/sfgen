@@ -24,24 +24,22 @@ def make_dest(project_path, app_name, app_type):
         raise FileExistsError(f"a file in {tmp_path} already exists.")
     os.mkdir(tmp_path)  # create the project path
     copy_tree(TEMPLATES_PATH + app_type, tmp_path)
-    return True
+    return tmp_path
 
 
-def get_files(directory):
-    templates = list()
-    names = list()
+def get_files(directory, app_name):
     for root, folders, files in os.walk(directory):
         for file_obj in files:
             if file_obj.endswith("tmpl"):
-                templates.append(file_obj)
-            elif "tmpl" in file_obj:
-                names.append(file_obj)
+                fix_template(project_name=app_name, file_path=file_obj)
+                fix_filename(name=file_obj, file_path=directory,
+                             project_name=app_name)
     return templates, names
 
 
-def fix_filename(name, file_path, app_name):
+def fix_filename(name, file_path, project_name):
     file_end = "." + name.split(".")[-1]
-    os.rename(file_path + name, file_path + app_name + file_end)
+    os.rename(file_path + name, file_path + project_name + file_end)
 
 
 def fix_template(project_name, file_path):
@@ -52,11 +50,9 @@ def make_app(app_name, app_path, app_type):
     """
     """
     app_type = app_type + "_app"
-    make_dest(app_name=app_name, project_path=app_path, app_type=app_type)
+    dest = make_dest(app_name=app_name, project_path=app_path, app_type=app_type)
     directory = make_path(app_name=app_name, project_path=app_path)
-    templates, names = get_files(directory)
-    for app in names:
-        fix_filename(name=app, file_path=directory, app_name=app_name)
+    get_files(directory=dest, app_name=app_name)
 
 
 if __name__ == "__main__":
