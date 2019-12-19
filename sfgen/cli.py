@@ -29,6 +29,8 @@ def make_path(project_path, app_name):
     :param app_name: the name of folder to be created
     :return: the path str
     """
+    if app_name.endswith("/"):
+        app_name = app_name[:-1]
     return os.path.join(project_path, app_name) + "/"
 
 
@@ -141,8 +143,8 @@ def make_app(app_name, app_path, app_type):
     get_files(directory=dest, app_name=app_name)
 
 
-if __name__ == "__main__":
-    # this runs if called from the terminal
+
+def main():
     description = "senaps fast [code (flask)] generator"
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument("app_type", choices=APP_TYPES)
@@ -152,4 +154,9 @@ if __name__ == "__main__":
                         help="the path to create the app in")
     args = parser.parse_args()
     make_app(args.name, args.project_path, args.app_type)
+
+
+if __name__ == "__main__":
+    # this runs if called from the terminal
+    main()
 
