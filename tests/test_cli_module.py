@@ -35,6 +35,7 @@ def test_make_dest_path_exists():
 
 
 def test_make_dest(mocker):
+
     with make_tmpdir() as tmp:
         assert make_dest(project_path=tmp, app_name="tester",
-                    app_type="simple") == f"/tmp/{tmp}tester/"
+                    app_type="simple_app") == f"{tmp}/tester/"

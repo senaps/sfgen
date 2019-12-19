@@ -16,7 +16,12 @@ from string import Template
 
 
 APP_TYPES = ['simple', 'full']
-TEMPLATES_PATH = os.path.join(os.path.abspath("."), "templates/")
+if __name__ == "__main__":
+    curr_path = os.path.abspath(".")
+else:
+    curr_path = os.path.abspath(__file__)[:-7]
+
+TEMPLATES_PATH = os.path.join(curr_path, "templates/")
 
 
 def make_path(project_path, app_name):
@@ -139,9 +144,12 @@ def make_app(app_name, app_path, app_type):
     :param app_type: the type of application to be created
     """
     app_type = app_type + "_app"
-    dest = make_dest(app_name=app_name, project_path=app_path, app_type=app_type)
-    get_files(directory=dest, app_name=app_name)
-
+    try:
+        dest = make_dest(app_name=app_name, project_path=app_path,
+                         app_type=app_type)
+        get_files(directory=dest, app_name=app_name)
+    except FileExistsError:
+        print("Error: project with this name already exists")
 
 
 def main():
