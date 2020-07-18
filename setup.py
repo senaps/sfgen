@@ -13,6 +13,7 @@ setup(
     author='sneaps',
     author_email='gerdakan.sa@gmail.com',
     description=description,
+    include_package_data=True,
     entry_points={
         'console_scripts': [
             'sfgen = sfgen.cli:main'

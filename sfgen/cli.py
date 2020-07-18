@@ -26,13 +26,9 @@ from string import Template
 
 
 APP_TYPES = ['simple', 'full']
-if __name__ == "__main__":
-    # are we calling the cli.py directly?
-    curr_path = os.path.abspath(".")
-else:
-    curr_path = os.path.abspath(__file__)[:-7]
 
-TEMPLATES_PATH = os.path.join(curr_path, "templates/")
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+TEMPLATES_PATH = os.path.join(BASE_DIR, "sfgen/templates/")
 
 
 def make_path(project_path, app_name):
@@ -123,6 +119,7 @@ def fix_filename(name, file_path, project_name):
     if name.endswith(".tmpl"):
         new_name = name[:-5]
     os.rename(file_path + name, file_path + new_name)
+
 
 
 def fix_template(name, file_path, project_name):
