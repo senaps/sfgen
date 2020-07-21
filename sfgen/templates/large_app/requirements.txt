@@ -1,0 +1,8 @@
+flask
+gunicorn
+flask-jwt-extended
+pytest
+flask-sqlalchemy
+flask-migrate
+flask-cors
+flassger

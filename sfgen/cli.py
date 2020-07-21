@@ -25,7 +25,7 @@ from distutils.dir_util import copy_tree
 from string import Template
 
 
-APP_TYPES = ['simple', 'full']
+APP_TYPES = ['simple', 'large']
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 TEMPLATES_PATH = os.path.join(BASE_DIR, "sfgen/templates/")
@@ -99,9 +99,9 @@ def get_files(directory, app_name):
     for root, folders, files in os.walk(directory):
         for file_obj in files:
             if file_obj.endswith("tmpl"):
-                fix_template(project_name=app_name, file_path=directory,
+                fix_template(project_name=app_name, file_path=root + "/",
                              name=file_obj)  # fix the content
-                fix_filename(name=file_obj, file_path=directory,
+                fix_filename(name=file_obj, file_path=root + "/",
                              project_name=app_name)  # fix the name
 
 
@@ -137,8 +137,11 @@ def fix_template(name, file_path, project_name):
     """
     tmp_path = file_path + name
     text = get_file_content(file_path=tmp_path)
-    res = Template(text).substitute(project_name=project_name)
-    set_file_content(file_path=tmp_path, content=res)
+    try:
+        res = Template(text).substitute(project_name=project_name)
+        set_file_content(file_path=tmp_path, content=res)
+    except (KeyError, ValueError):
+        pass
 
 
 def make_app(app_name, app_path, app_type):
