@@ -1,0 +1,41 @@
+current user details.
+
+returns an object containing the detail about current user. this includes their name, email, authorities and etc.
+
+---
+tags:
+  - users
+security:
+  - Bearer: []
+responses:
+  200:
+    description: current user details
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+              description: usrename of the user
+              example: admin
+            email:
+              type: string
+              description: email of the user
+              example: admin@mail.com
+            first_name:
+              type: string
+            last_name:
+              type: string
+            role:
+              type: string
+              description: role of the user in the system
+              example: Administrator
+            force_password_change:
+              type: bool
+              description: whether the user need's to change their password or not.
+              example: true
+            authorities:
+              type: list
+              description: list of authority names of the user
+              example: [create_user, assign_role]

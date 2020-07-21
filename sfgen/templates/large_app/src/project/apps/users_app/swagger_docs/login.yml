@@ -1,0 +1,86 @@
+login the user
+
+this method will receive a `username` and `password` combinations and tries
+to login the user.
+---
+tags:
+  - users
+requestBody:
+  description: username and password
+  required: true
+  content:
+    application/json:
+      schema:
+        required:
+          - username
+          - password
+        properties:
+          username:
+            type: string
+            description: username for the user
+            example: admin
+          password:
+            type: string
+            description: password for the user
+            example: admin
+responses:
+  200:
+    description: user logged in successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: persian message from server
+              example: با موفقیت وارد شدید
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: []
+  400:
+    description: missing username or password
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: message from the server
+              example: نام کاربری یا رمز عبور ارسال نشده
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: []
+  422:
+    description: username or password is wrong
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: message from the server
+              example: نام کاربری یا رمز عبور درست نیست
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: []
+  403:
+    description: user needs to change their password
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: message from the server
+              example: رمز عبور را عوض کنید
+            commands:
+              type: string
+              description: list of commands to be executed
+              example: [redirect]

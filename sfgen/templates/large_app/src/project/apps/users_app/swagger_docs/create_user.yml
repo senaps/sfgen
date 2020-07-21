@@ -1,0 +1,96 @@
+create a new user
+
+add a new user to the system. email, username, password and role are required. firstname/lastname are optional.
+role could be anything between `Administrator` or `Reporter` but a single one should be sent
+---
+tags:
+  - users
+security:
+  - Bearer: []
+requestBody:
+  description: username and password
+  required: true
+  content:
+    application/json:
+      schema:
+        required:
+          - username
+          - password
+          - confirm_password
+          - email
+          - role
+        properties:
+          username:
+            type: string
+            description: username for the user
+            example: hassan
+          password:
+            type: string
+            description: password for the user
+            example: 123pass
+          confirm_password:
+            type: string
+            description: confirm the password
+            example: 123pass
+          first_name:
+            type: string
+            description: first name of the user
+            example: hassan
+          last_name:
+            type: string
+            description: last name for the user
+            example: hassan zadeh
+          email:
+            type: string
+            description: user's email
+            example: hassan@mail.com
+          role:
+            type: string
+            description: user's role in the system
+            example: Administrator
+responses:
+  201:
+    description: user was created successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: persian message from server
+              example: کاربر با موفقیت ایجاد شد
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: []
+  400:
+    description: a required field is missing, passwords don't match, role doesn't match
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: message from the server
+              example: فیلد الزامی پر نشده است
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: []
+  409:
+    description: a required field is missing, passwords don't match, role doesn't match
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: message from the server
+              example: نام کاربری قبلا وجود دارد
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: []

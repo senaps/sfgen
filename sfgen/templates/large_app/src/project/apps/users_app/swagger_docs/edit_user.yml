@@ -1,0 +1,99 @@
+edit the given user
+
+edit the given user on the system.
+---
+tags:
+  - users
+security:
+  - Bearer: []
+parameters:
+  - in: path
+    name: username
+    schema:
+      type: string
+    description: username of the user to be edited
+    example: admin
+requestBody:
+  description: username and password
+  required: true
+  content:
+    application/json:
+      schema:
+        required:
+          - username
+          - password
+          - confirm_password
+          - current_password
+          - email
+          - role
+        properties:
+          password:
+            type: string
+            description: password for the user
+            example: 123pass
+          confirm_password:
+            type: string
+            description: confirm the password
+            example: 123pass
+          current_password:
+            type: string
+            description: current password for the user
+            example: 213
+          first_name:
+            type: string
+            description: first name of the user
+            example: hassan
+          last_name:
+            type: string
+            description: last name for the user
+            example: hassan zadeh
+          email:
+            type: string
+            description: user's email
+            example: hassan@mail.com
+          role:
+            type: string
+            description: user's role in the system
+            example: Administrator
+responses:
+  201:
+    description: user was updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: persian message from server
+              example: کاربر با موفقیت ویرایش شد
+  400:
+    description: a required field is missing, passwords don't match, role doesn't match
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: message from the server
+              example: فیلد الزامی پر نشده است
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: []
+  409:
+    description: a required field is missing, passwords don't match, role doesn't match
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: message from the server
+              example: نام کاربری قبلا وجود دارد
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: []

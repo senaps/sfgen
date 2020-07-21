@@ -1,0 +1,50 @@
+remove a user from the system
+
+this route will remove the passed in user from the system. username is the string `username` of the user not their
+id or name.
+---
+tags:
+  - users
+security:
+  - Bearer: []
+parameters:
+  - in: path
+    name: username
+    required: true
+    schema:
+      type: string
+    description: username we want to remove
+responses:
+  200:
+    description: user was removed successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: persian message from server
+              example: کاربر با موفقیت حذف شد
+  204:
+    description: user with that username was not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: persian message from server
+              example: کاربری با نام کاربری پیدا نشد
+  403:
+    description: user is not able to remove a user from the system
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: message from the server
+              example: شما دسترسی کافی برای حذف کاربران را ندارید

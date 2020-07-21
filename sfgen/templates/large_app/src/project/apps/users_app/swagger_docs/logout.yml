@@ -1,0 +1,24 @@
+logout the user
+
+this route is used to logout the user from the system
+---
+tags:
+  - users
+security:
+  - Bearer: []
+responses:
+  200:
+    description: user logged out
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              description: persian message from server
+              example: با موفقیت خارج شدید
+            commands:
+              type: string
+              description: list of actions to be taken
+              example: [redirect]

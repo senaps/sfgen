@@ -1,0 +1,49 @@
+return a list of users of the system
+
+this view will get the list of all the users and returns the values in a
+paginated style.
+
+---
+tags:
+  - users
+security:
+  - Bearer: []
+parameters:
+  - in: path
+    name: page
+    required: true
+    schema:
+      type: string
+    description: page
+    example: 1
+  - in: path
+    name: weight
+    required: true
+    schema:
+      type: string
+    description: per page rows
+    example: 20
+responses:
+  200:
+    description: list of user objects
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            data:
+              example: [{username: "admin", email: "admin@mail.com", firstname: "admin", lastname: "admin zadeh",
+                         role: "Administrator"}]
+            pagination:
+              example: {nex_page: false, page: 1, total: 1, weight: 20}
+  204:
+    description: there is no users in the db
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            data:
+              example: []
+            pagination:
+              example: {nex_page: false, page: 1, total: 1, weight: 20}
