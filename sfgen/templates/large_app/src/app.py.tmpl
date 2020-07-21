@@ -1,0 +1,14 @@
+"""run the $project_name app
+
+this module is in control of running the app for $project_name. we will create an app, configure
+it and then try to run it.
+
+"""
+import os
+
+from project.application import create_app
+from project.config import CONFIG_MAPPER
+
+env = os.environ.get("FLASK_ENV", "development")
+
+app = create_app(CONFIG_MAPPER.get(env))

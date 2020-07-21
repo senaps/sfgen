@@ -1,0 +1,133 @@
+"""Factory methods and applications
+
+this module contains functions and variables needed to create a fully
+functional factory based application.
+this module will produce variables such as main service application and configs
+blueprints for it, uses configs on it and all stuff needed.
+
+    - create_app()  create a new application instance for flask
+    - _load_config()  configure an application to use `config` object
+    - _load_blueprints()  load blueprints to given application
+    - _config_extenstions()  load and register extentions in the app
+
+"""
+from flask import Flask
+
+
+def create_app(config):
+    """create and return a flask object
+
+    this function will create a flask application object and returns it to the
+    calling function, providing the app instance with all the configs and
+    modules it needs.
+
+    :param config: configurations object for the flask app
+    :return: flask application instance
+    """
+    app = Flask(__name__)
+
+    _load_config(app=app, config=config)
+    _config_extenstions(app=app)
+    _load_blueprints(app=app)
+
+    from .apps.utils import make_response
+
+    @app.route("/")
+    def home_ping():
+        return make_response(data="pong")
+
+    @app.errorhandler(400)
+    def bad_parameter(e):
+        return make_response(status_code=400, data=e.description)
+
+    @app.errorhandler(500)
+    def server_error(e):
+        return make_response(status_code=500, data=e.description)
+
+    @app.errorhandler(503)
+    def server_error(e):
+        return make_response(status_code=503, data=e.description)
+
+    return app
+
+
+def _load_config(app, config):
+    """configure the app from a config object
+
+    load up the configuration settings for the app
+    this will load the given configuration class while
+    creating the app
+    given config object should be a class object:
+        class DefaultConfig:
+            app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////dev.db'
+
+    :param app: the application instance we want to config
+    :param config: the configuration object we want to use for the app
+    """
+    app.config.from_object(config)
+
+
+def _load_blueprints(app):
+    """load the blueprints for the app
+
+    import the blueprints, register them in this function
+    and they are useable for the app.
+    this function utilized an autoload mechanism. just putting yout app with
+    it's name ending with a `_app` in the `apps` folder will trigger the auto-
+    load functionality. otherwise, you'd have to register your app manually.
+
+    :param app: app instance
+    """
+    import importlib
+    import os
+
+    blueprints = os.listdir('project/apps/')
+    for _app in blueprints:
+        if _app.endswith('_app'):
+            path = f'.apps.{_app}'
+            try:
+                obj = importlib.import_module(path, package='project')
+                if obj:
+                    app.register_blueprint(obj.BLUEPRINT)
+            except Exception as e:
+                print(f"application in path {_app} was not able to load")
+                raise
+
+
+def _config_extenstions(app):
+    """load and register extensions for app instance
+
+    this function will receive the app instance object and will register extenstions
+    we need. we are importing extenstions to be used on the code from within
+    the function itself.
+
+    :param app: app instance
+    """
+    from .extensions import db, cors, jwt, swag, mg
+
+    jwt.init_app(app)
+    db.init_app(app)
+    mg.init_app(app, db, render_as_batch=True)
+    swagger_template = {
+        "schemes": ["http"],
+        }
+    swag.template = swagger_template
+    app.config['SWAGGER'] = {
+
+        "components":{"securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "name": "Authorization",
+                "scheme": "bearer",
+                "in": "header"}
+            }},
+        "title": "$project_name API Documentation",
+        "uiversion": 3,
+        "swagger": "2.0",
+        "openapi": "3.0.0"
+    }
+    swag.init_app(app)
+    cors.init_app(app,
+                  supports_credentials=True,
+                  resources={r"/*":{"origins": "*"}},
+                  expose_headers=['msg', 'Date'])

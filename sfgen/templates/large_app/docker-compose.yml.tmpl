@@ -1,0 +1,12 @@
+version : '3'
+
+services:
+  $project_name:
+    image: <registry>/$project_name:0.0.1
+    ports:
+      - 8000:8000
+    restart: always
+    env_file:
+      - environ.env
+    volumes:
+      - ./persist_files/$project_name.db:/tmp/$project_name.db

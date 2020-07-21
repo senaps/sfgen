@@ -1,1 +1,2 @@
 include sfgen/templates/simple_app/*
+include sfgen/templates/large_app/*

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+
+if ! source env/bin/activate ; then
+    echo "travling back one folder for an env file"
+    cd ../..
+    source env/bin/activate
+    cd code/src
+fi
+
+if [[ $1 == "test" ]]; then
+    if ! [[ -e /tmp/$project_name.db ]]; then
+        python3 manage.py initdb
+        python3 manage.py user add_role Administrator
+        python3 manage.py user add_user admin admin admin@example.com Administrator
+    fi
+    export FLASK_APP=app
+    export FLASK_ENV=development
+    python3 manage.py initdb
+    flask db upgrade head
+    gunicorn -w 2 app:app --bind 0.0.0.0:8000
+fi

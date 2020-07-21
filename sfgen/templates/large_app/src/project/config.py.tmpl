@@ -1,0 +1,85 @@
+"""Config details for the application
+
+this file will contain all the configurations needed for the application to
+work properly. we will config lots of modules and packages, and should decide
+on a lot's of things, this is how we control them. this is the only file to
+be changed in case of need to change the behaviour of the application.
+
+   - Logger_CONF  logger configurations
+   - LOGGER_BKCOUNT  logger files to be kept for backup
+   - LOGGER_SIZE  log file sizes
+   - DB_URI  database to be used for application
+
+"""
+import os
+
+
+LOGGER_LEVEl = int(os.environ.get("log_level", 20))
+LOGGER_HANDLER = os.environ.get("log_handle", "file")
+LOGGER_BKCOUNT = 5  # 5 log files archived
+LOGGER_CONF = {"path": "/var/log/$project_name/$project_name_error.log",
+               "name": "$project_name",
+               "format": "[%(asctime)s]%(name)s - %(levelname)s  :%(message)s",
+               "level": LOGGER_LEVEl,
+               "handler": LOGGER_HANDLER}  # logger configs"
+LOGGER_SIZE = 10000000  # 10MB log files
+
+
+# the database url is loaded from the environments variables and is used to
+# determine where the database is for the machine
+DB_URI = os.environ.get('DB_URI', 'sqlite:////tmp/$project_name.db')
+
+# Email regex pattern
+EMAIL_PATTERN = "^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+
+
+class Config:
+    """Base Configurations for the application
+
+    this class contains the base and constant configs that are shared across all
+    config classes and is used to be inhearated by other config classes.
+
+        - SQLALCHEMY_TRACK_MODIFICATIONS  track changes in flask_sqlalchemy
+        - UPLOAD_FOLDER  where uploaded files should be stored in
+        - SQLALCHEMY_DATABASE_URI load the database url from DB_URI in module
+
+    """
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = DB_URI
+    SQLALCHEMY_ECHO = False  # show what queries are being executed!
+    JWT_BLACKLIST_ENABLED = True
+    JWT_ACCESS_TOKEN_EXPIRES = False  # disable session expire
+    JSON_SORT_KEYS = False
+
+
+class DevelopmentConfig(Config):
+    """
+    development configs object
+    """
+    SECRET_KEY ="testmy app"
+
+
+class ProductionConfig(Config):
+    """
+    production config object
+    """
+    SQLALCHEMY_RECORD_QUERIES = True
+    DATABASE_QUERY_TIMEOUT = 0.5
+    SECRET_KEY = os.environ.get('APP_SECRET')
+
+
+class TestingConfig(Config):
+    """
+    testing config object
+    """
+    TESTING = True
+    SECRET_KEY = "test"
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/testing-db.db'
+
+
+#we are able to simply load a specific Configs class using a name
+CONFIG_MAPPER = {
+    'production': ProductionConfig,
+    'testing': TestingConfig,
+    'development': DevelopmentConfig
+    }
