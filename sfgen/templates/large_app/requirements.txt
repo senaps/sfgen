@@ -5,4 +5,4 @@ pytest
 flask-sqlalchemy
 flask-migrate
 flask-cors
-flassger
+flasgger
